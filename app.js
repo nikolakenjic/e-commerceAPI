@@ -1,7 +1,44 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const express = require('express');
-
 const app = express();
 
-app.listen(5050, () => {
-  console.log('server is running on a port 5050');
+// Morgan Import
+const morgan = require('morgan');
+// Database Import
+const connectDB = require('./db/connect');
+// Error Import
+const notFoundMiddleware = require('./middleware/not-found');
+const errorHandlerMiddleware = require('./middleware/error-handler');
+
+// Middleware
+app.use(express.json());
+
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+
+app.use('/', (req, res) => {
+  res.send('e-commerce api');
 });
+
+// Errors
+app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
+
+// PORT
+const port = process.env.PORT || 5050;
+
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGO_URL);
+    app.listen(port, () => {
+      console.log(`Server is running on a port ${port}...`);
+    });
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+};
+
+start();
