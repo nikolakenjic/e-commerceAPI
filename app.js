@@ -10,6 +10,8 @@ const connectDB = require('./db/connect');
 // Error Import
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
+// Routers
+const authRouter = require('./routes/authRoutes');
 
 // Middleware
 app.use(express.json());
@@ -18,9 +20,11 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-app.use('/', (req, res) => {
+app.get('/', (req, res) => {
   res.send('e-commerce api');
 });
+
+app.use('/api/v1/auth', authRouter);
 
 // Errors
 app.use(notFoundMiddleware);
