@@ -2,6 +2,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const express = require('express');
 const app = express();
+const cookieParser = require('cookie-parser');
 
 // Morgan Import
 const morgan = require('morgan');
@@ -15,12 +16,18 @@ const authRouter = require('./routes/authRoutes');
 
 // Middleware
 app.use(express.json());
+app.use(cookieParser(process.env.JWT_SECRET));
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
 app.get('/', (req, res) => {
+  res.send('e-commerce api');
+});
+
+app.get('/api/v1', (req, res) => {
+  console.log(req.signedCookies);
   res.send('e-commerce api');
 });
 
