@@ -3,5 +3,11 @@ const {
   verifyToken,
   attachCookiesToResponse,
 } = require('./tokenUtils');
+const createTokenUser = require('./createTokenUser');
 
-module.exports = { createJWT, verifyToken, attachCookiesToResponse };
+module.exports = {
+  createJWT,
+  verifyToken,
+  attachCookiesToResponse,
+  createTokenUser,
+};

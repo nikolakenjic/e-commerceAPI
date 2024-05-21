@@ -22,7 +22,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: [true, 'Please provide password'],
     minlength: 6,
-    maxlength: 30,
   },
   role: {
     type: String,
@@ -33,6 +32,7 @@ const userSchema = new mongoose.Schema({
 
 // Hash password
 userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return;
   try {
     const salt = await bcrypt.genSalt(12);
     this.password = await bcrypt.hash(this.password, salt);
