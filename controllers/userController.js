@@ -5,7 +5,11 @@ const {
   NotFoundError,
   UnauthenticatedError,
 } = require('./../errors');
-const { createTokenUser, attachCookiesToResponse } = require('../utils');
+const {
+  createTokenUser,
+  attachCookiesToResponse,
+  checkPermissions,
+} = require('../utils');
 
 const getAllUsers = async (req, res, next) => {
   console.log(req.user);
@@ -21,6 +25,8 @@ const getSingleUser = async (req, res, next) => {
     if (!user) {
       throw new NotFoundError('User Not Found');
     }
+
+    checkPermissions(req.user, user._id);
 
     res.status(StatusCodes.OK).json({ message: 'Success', user });
   } catch (err) {
