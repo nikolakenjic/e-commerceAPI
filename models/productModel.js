@@ -32,7 +32,7 @@ const productSchema = new mongoose.Schema(
         message: '{VALUE} is not supported',
       },
     },
-    colors: { type: [String], require: true },
+    colors: { type: [String], default: ['#222'], require: true },
     featured: { type: Boolean, default: false },
     freeShipping: { type: Boolean, default: false },
     inventory: { type: Number, require: true, default: 15 },
